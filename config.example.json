@@ -1,0 +1,15 @@
+{
+  "FIRM": "Example Bank",
+  "FIRM_TICKER": "EXB",
+  "FIRM_TICKER_LOWER": "exb",
+  "FIRM_SEARCH_NAMES": "Example Bank, ExampleBank, EXB and the CEO's name",
+  "FIRM_BUSINESSES": "consumer banking, commercial and investment banking (investment banking, markets, payments, and commercial and corporate banking), and asset and wealth management",
+  "FIRM_NEWSROOM_URL": "https://newsroom.example.com/",
+  "FIRM_SEC_CIK": "0000000000",
+  "PEER_BANKS": "Bank A, Bank B, Bank C and Bank D",
+  "PEER_TICKERS": "AAA, BBB, CCC, DDD",
+  "GLOBAL_PEER_BANKS": "HSBC, Barclays, UBS and Deutsche Bank",
+  "BRIEFINGS_FOLDER_ID": "your-google-drive-briefings-folder-id",
+  "TRACKER_FOLDER_ID": "your-google-drive-story-tracker-subfolder-id",
+  "WORLDNEWS_ACCOUNT": "your-composio-world-news-api-account-name"
+}
