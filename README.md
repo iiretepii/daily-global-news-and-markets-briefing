@@ -14,7 +14,7 @@ Prompts:
 - [`prompts/morning-global-news-markets-briefing.md`](prompts/morning-global-news-markets-briefing.md)
 - [`prompts/afternoon-global-news-markets-briefing.md`](prompts/afternoon-global-news-markets-briefing.md)
 
-## What each episode covers
+## What Each Episode Covers
 
 The morning briefing opens with The Good News, then The Morning in Sixty Seconds, the Top Five stories, What Moved Markets, equities, rates and the Fed, global markets and commodities, credit and banking, a `{{FIRM}} Watch` section with a read-through by line of business, the US, a region-by-region world pass, Beyond the Headlines, and the day's calendar. On Saturday the markets sections become a Week in Review, and on Sunday a Week Ahead.
 
@@ -47,7 +47,7 @@ python3 scripts/fill_placeholders.py config.json filled/
 
 The script reports any placeholder left unfilled and warns if a filled prompt goes over the 64 KB limit on scheduled-task prompts. Both prompts sit close to that limit, so long values (especially `{{FIRM_BUSINESSES}}`) can push them over; new rules have to replace old text rather than add to it. Keep `config.json` and `filled/` out of version control.
 
-## How a run works
+## How a Run Works
 
 1. **Load memory.** The run reads the latest story tracker and the two most recent briefings from Drive. Continuing stories are told as updates: lead with what's new, recap in a sentence or two at most, and say how the story moved.
 2. **Research in parallel.** The lead agent launches subagents in one message (ten in the morning, five in the afternoon), one per coverage area, and runs a front-page sweep itself. Each subagent gets a self-contained brief with its sources, caps and tracked storylines, and returns ranked, dated, sourced findings ending with a `SELF-COUNT` line.
@@ -56,15 +56,15 @@ The script reports any placeholder left unfilled and warns if a filled prompt go
 5. **Save.** The briefing goes to Drive as a Google Doc titled `YYYY-MM-DD - <Briefing name>`, plus a fresh tracker (`YYYY-MM-DD - Story Tracker`, with `PM` for the afternoon run). Earlier trackers are never edited.
 6. **Report.** The run ends with a Run Report: time and quota per agent, coverage, connector status, breakage and repeats caught. If a connector breaks, the run sends a push notification.
 
-### Story tracker
+### Story Tracker
 
 The tracker is a plain-text Google Doc holding active and dormant storylines, reference figures (index levels, yields, spreads, FX, commodities, the firm's stock and the bank index), a Good News Log, an Aired Items Log covering everything aired in the last 14 days, and a Metaphor Log. It is capped at about 4,000 words.
 
-## The agents
+## The Agents
 
 Each run has one lead agent and a set of research subagents launched together in Step A. The lead owns everything that needs the whole picture: memory, the front-page sweep, consolidation, verification, drafting, the quality gate, saving and the Run Report. Subagents own one coverage area each and return findings, never prose for the briefing. Search and Alpha Vantage caps below are hard per-agent limits; FMP and built-in WebFetch are uncapped.
 
-### Morning (ten subagents)
+### Morning (Ten Subagents)
 
 | Agent | Coverage | What it does | WebSearch cap | Alpha Vantage cap |
 |---|---|---|---|---|
@@ -80,7 +80,7 @@ Each run has one lead agent and a set of research subagents launched together in
 | `{{FIRM}}` | Area 9 | Firm news across every line of business, the stock against the bank index and peers, executive commentary, legal and regulatory matters, competitor moves; says plainly when the window was quiet | 22 | 2 |
 | Good News | Area 11 | Two to four verified, substantive positive developments over 72 hours, checked against the Good News Log and the tracker's unused candidates | 20 | 0 |
 
-### Afternoon (five subagents)
+### Afternoon (Five Subagents)
 
 The afternoon run is a delta update, so the eleven coverage areas collapse into five broader passes, each told what the morning already aired and asked only for what changed since then.
 
@@ -95,7 +95,7 @@ The afternoon run is a delta update, so the eleven coverage areas collapse into 
 
 In both runs the lead can also launch a single web-fetch subagent when it needs more than about six pages read during verification, because the lead has no built-in WebFetch in scheduled runs.
 
-### Why fan out to subagents
+### Why Fan Out to Subagents
 
 The short answer is that one agent cannot read enough, fast enough, without drowning in what it read. A morning run reads well over a hundred pages across eleven coverage areas. If the lead did that itself, every article, data page and failed fetch would sit in its context, and by the time it reached drafting the material it needs to weigh would be competing with thousands of lines of raw page text. Each subagent instead absorbs its own pages and hands back eight to twelve ranked, dated, sourced findings. The lead starts consolidation with a clean, comparable set of inputs rather than a transcript of the research.
 
@@ -111,7 +111,7 @@ Finally, the shape of the fan-out follows the job. The morning briefing is a ful
 
 ## Setup
 
-### Scheduled tasks
+### Scheduled Tasks
 
 Create two scheduled tasks in Claude and paste one filled prompt into each.
 
@@ -139,7 +139,7 @@ Every search must name the date, every capped tool keeps a running tally, and pa
 
 Upload each day's Google Doc to Gemini Notebook as the episode's only source. The `EPISODE_OVERVIEW` line at the top is under 500 characters, so it can also be pasted into the customize box as-is. The five `DIRECTOR_NOTES` lines below it steer tone, continuity, priorities, segment coverage and framing.
 
-## Audio-first rules
+## Audio-First Rules
 
 - **Document order is run-of-show.** The hosts work top to bottom.
 - **Audio Rule of Two.** At most two contrast numbers per story or instrument, rounded. The rest is described by direction; full figures go to the tracker.
